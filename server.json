@@ -1,0 +1,18 @@
+{
+    "name": "ElectrIQ NodeServer",
+    "docs": "",
+    "type": "python",
+    "executable": "electriq.py",
+    "description": "Add ElectrIQ System control to the ISY994.",
+    "notice": "",
+    "credits": [
+        {
+            "title": "ElectrIQ NodeServer",
+            "author": "James Milne (Einstein.42)",
+            "version": "0.1",
+            "date": "July 2nd, 2017",
+            "source": "https://github.com/Einstein42/electriq-nodeserver",
+            "license": "MIT"
+        }
+    ]
+}

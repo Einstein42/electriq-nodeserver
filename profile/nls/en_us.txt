@@ -1,0 +1,50 @@
+# Global for all the QUERY labels
+CMD-ST-NAME = Query
+
+# ElectrIQ Controller
+ND-pika-NAME = ElectrIQ Controller
+ND-pika-ICON = Electricity
+ST-eqpika-GV1-NAME = Update Number
+ST-eqpika-GV2-NAME = Device Count
+ST-eqpika-GV3-NAME = System Operating Mode
+
+# Inverter
+ND-inverter-NAME = Inverter
+ND-inverter-ICON = EnergyMonitor
+ST-inv-GV1-NAME = State
+ST-inv-GV2-NAME = Enabled
+ST-inv-GV3-NAME = REbus Power
+ST-inv-GV4-NAME = CT power
+ST-inv-GV5-NAME = Amps
+ST-inv-GV6-NAME = Phase Voltage AN
+ST-inv-GV7-NAME = Watts
+ST-inv-GV8-NAME = KiloWattHours
+ST-inv-GV9-NAME = Hz
+ST-inv-GV10-NAME = VA
+ST-inv-GV11-NAME = VAr
+ST-inv-GV12-NAME = PF
+ST-inv-GV13-NAME = DC Voltage
+ST-inv-GV14-NAME = PMaxLimPct
+ST-inv-GV15-NAME = QMaxLimPct
+ST-inv-ST-NAME = CumVArh
+ST-inv-RR-NAME = CumkVArh
+
+# Battery
+ND-battery-NAME = Inverter
+ND-battery-ICON = EnergyMonitor
+ST-bat-GV1-NAME = State
+ST-bat-GV2-NAME = Enabled
+ST-bat-GV3-NAME = REbus Power 
+ST-bat-GV4-NAME = Device Temperature
+ST-bat-GV5-NAME = Nameplate Min SoC
+ST-bat-GV6-NAME = Nameplate Max SoC
+ST-bat-GV7-NAME = Min Reserve Percent
+ST-bat-GV8-NAME = Max Reserve Percent
+ST-bat-GV9-NAME = Total DC Current
+ST-bat-GV10-NAME = External Battery Voltage
+ST-bat-GV11-NAME = Total Power
+ST-bat-GV12-NAME = Min Cell Voltage
+ST-bat-GV13-NAME = Max Cell Voltage
+ST-bat-GV14-NAME = State of Charge
+ST-bat-GV15-NAME = State of Health
+

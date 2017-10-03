@@ -1,0 +1,53 @@
+<editors>
+   <!-- Amps -->
+   <editor id="I_AMPS">
+	  <range uom="1"  min="0" max="50000" />
+   </editor>
+   <editor id="I_AMPS_FLOAT">
+	  <range uom="1"  min="0" max="50000" step="0.1" prec="1" />
+   </editor>
+   <!-- Volts -->
+   <editor id="I_VOLTS">
+	  <range uom="72"  min="0" max="50000" />
+   </editor>
+   <editor id="I_VOLTS_FLOAT">
+	  <range uom="72"  min="0" max="50000" step="0.1" prec="1" />
+   </editor>
+   <!-- kiloWatts -->
+   <editor id="I_KWH">
+	  <range uom="33"  min="0" max="50000"/>
+   </editor>
+   <editor id="I_KWH_FLOAT">
+	  <range uom="33"  min="0" max="50000" step="0.1" prec="1" />
+   </editor>
+   <!-- Watts -->
+   <editor id="I_WATTS">
+	  <range uom="73"  min="0" max="50000"/>
+   </editor>
+   <editor id="I_WATTS_FLOAT">
+	  <range uom="73"  min="0" max="50000" step="0.1" prec="1" />
+   </editor>
+   <!-- Hertz -->
+   <editor id="I_HERTZ">
+	  <range uom="90"  min="0" max="50000"/>
+   </editor>
+   <editor id="I_HERTZ_FLOAT">
+	  <range uom="90"  min="0" max="50000" step="0.1" prec="1" />
+   </editor>
+   <!-- Degrees Celcius -->
+   <editor id="I_TEMP_C">
+      <range uom="4" />
+   </editor>
+   <!-- Raw Data -->
+   <editor id="I_RAW">
+	  <range uom="56" />
+   </editor>
+   <!-- Percentage -->
+   <editor id="I_PERCENT">
+	  <range uom="51" />
+   </editor>
+   <!-- Boolean -->
+   <editor id="I_BOOL">
+	  <range uom="2" />
+   </editor>   
+</editors>

@@ -1,0 +1,67 @@
+<nodeDefs>
+    <!-- ElectrIQ Control -->
+    <nodeDef id="pika" nls="eqpika" eventMap="I_STD">
+        <editors />
+        <sts>
+			 <st id="GV1" editor="I_RAW" />
+			 <st id="GV2" editor="I_RAW" />
+			 <st id="GV3" editor="I_RAW" />	
+		</sts>
+        <cmds>
+            <sends />
+            <accepts>
+				<cmd id="QUERY" />
+		    </accepts>
+        </cmds>
+    </nodeDef>
+   <nodeDef id="inverter" nls="inv" eventMap="I_STD">
+      <sts>
+		 <st id="GV1" editor="I_RAW" />
+		 <st id="GV2" editor="I_BOOL" />
+		 <st id="GV3" editor="I_WATTS_FLOAT" />
+		 <st id="GV4" editor="I_RAW" />
+		 <st id="GV5" editor="I_AMPS_FLOAT" />
+		 <st id="GV6" editor="I_VOLTS_FLOAT" />
+		 <st id="GV7" editor="I_WATTS_FLOAT" />
+		 <st id="GV8" editor="I_KWH_FLOAT" />
+		 <st id="GV9" editor="I_HERTZ_FLOAT" />
+		 <st id="GV10" editor="I_RAW" />
+		 <st id="GV11" editor="I_RAW" />
+		 <st id="GV12" editor="I_PERCENT" />
+		 <st id="GV13" editor="I_VOLTS_FLOAT" />
+		 <st id="GV14" editor="I_PERCENT" />
+		 <st id="GV15" editor="I_PERCENT" />
+		 <st id="ST" editor="I_RAW" />
+		 <st id="RR" editor="I_RAW" />
+      </sts>
+      <cmds>
+         <accepts>
+            <cmd id="QUERY" />
+         </accepts>
+      </cmds>
+   </nodeDef>
+   <nodeDef id="battery" nls="bat" eventMap="I_STD">
+      <sts>
+		 <st id="GV1" editor="I_RAW" />
+		 <st id="GV2" editor="I_BOOL" />
+		 <st id="GV3" editor="I_WATTS_FLOAT" />
+		 <st id="GV4" editor="I_TEMP_C" />
+		 <st id="GV5" editor="I_PERCENT" />
+		 <st id="GV6" editor="I_PERCENT" />
+		 <st id="GV7" editor="I_PERCENT" />
+		 <st id="GV8" editor="I_PERCENT" />
+		 <st id="GV9" editor="I_AMPS_FLOAT" />
+		 <st id="GV10" editor="I_VOLTS_FLOAT" />
+		 <st id="GV11" editor="I_WATTS_FLOAT" />
+		 <st id="GV12" editor="I_VOLTS_FLOAT" />
+		 <st id="GV13" editor="I_VOLTS_FLOAT" />
+		 <st id="GV14" editor="I_PERCENT" />
+		 <st id="GV15" editor="I_PERCENT" />
+      </sts>
+      <cmds>
+         <accepts>
+            <cmd id="QUERY" />
+         </accepts>
+      </cmds>
+   </nodeDef>
+ </nodeDefs>
