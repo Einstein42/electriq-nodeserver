@@ -1,16 +1,16 @@
 #!/usr/bin/python
-""" Node Server for Polyglot 
+""" Node Server for Polyglot
       by Einstein.42(James Milne)
       milne.james@gmail.com"""
 
-from __future__ import division      
-from polyglot.nodeserver_api import SimpleNodeServer, PolyglotConnector, Node   
-      
+from __future__ import division
+from polyglot.nodeserver_api import SimpleNodeServer, PolyglotConnector, Node
+
 import sunspec.core.client as Sunspec
 import time
 
 PIKA_IP = '127.0.0.1'
-PIKA_PORT = '19999'
+PIKA_PORT = '19998'
 
 VERSION = "1.0"
 LOGGER = None
@@ -152,12 +152,12 @@ PIKASTATUS = {
 def myfloat(value, prec=2):
     """
     Round and return float
-    
+
     :param value: Value to convert to float
     :param prec: Decimal places (default 2)
     """
     try:
-        x = round(float(value), prec) 
+        x = round(float(value), prec)
     except (TypeError, ValueError):
         x = 0
     return x
@@ -166,12 +166,12 @@ class ElectrIQSystem(SimpleNodeServer):
     controller = None
     inverters = []
     batteries = []
-    
+
     def setup(self):
         manifest = self.config.get('manifest',{})
         global LOGGER
         LOGGER = self.poly.logger
-        LOGGER.info("FROM Poly ISYVER: %s", self.poly.isyver)        
+        LOGGER.info("FROM Poly ISYVER: %s", self.poly.isyver)
         LOGGER.debug(manifest)
         self.controller = ElectrIQNode(self, manifest)
         self.controller.addDevices()
@@ -181,7 +181,7 @@ class ElectrIQSystem(SimpleNodeServer):
         if len(self.inverters) >= 1:
             for i in self.inverters:
                 i.query()
-        
+
     def poll(self):
         if self.controller is not None:
             self.controller.update_info()
@@ -192,7 +192,7 @@ class ElectrIQSystem(SimpleNodeServer):
 
 
     def long_poll(self):
-        pass
+        self.report_drivers()
 
     def report_drivers(self):
         if self.controller is not None:
@@ -201,27 +201,27 @@ class ElectrIQSystem(SimpleNodeServer):
             for i in self.inverters:
                 i.report_driver()
 
-                
+
 class ElectrIQNode(Node):
     """
     Instantiate the Main ElectrIQ Node.
-    
+
     :param parent: Parent node device (ElectrIQSystem)
     :param primary: True/False if this is the primary node
     :param address: Address of the node for ISY
     :param manifest: Directory of config values
-    
+
     .. autoattribute:: _drivers
     .. autoattribute:: _commands
     .. autoattribute:: node_def_id
     """
-    
+
     def __init__(self, parent, manifest=None):
         self.parent = parent
         self.address = None
         self.name = 'ElectrIQ Pika Controller'
         self.serial = None
-        self.pika = None 
+        self.pika = None
         self.pika = openConnection(self.pika, 1)
         self.UpdtN = None
         self.Ct = None
@@ -238,7 +238,7 @@ class ElectrIQNode(Node):
             self.set_driver('GV3', self.SysMd)
         else:
             LOGGER.error('Failed to create control node, connection not established.')
-            
+
     def addDevices(self):
         if self.pika is not None:
             for device in self.pika.REbus_dir.devices:
@@ -250,7 +250,7 @@ class ElectrIQNode(Node):
                         LOGGER.info('Battery Controller Found with Slave_ID of :{}'.format(device.UnitID))
                         address = 'eq_btc_' + str(device.UnitID)
                         self.parent.inverters.append(Battery(self.parent, self, device))
-            
+
     def update_info(self):
         """
         Update all the values (runs on long_poll)
@@ -281,26 +281,26 @@ class ElectrIQNode(Node):
         time.sleep(10)
         self.parent.report_drivers()
         return True
-        
+
     _drivers = {
                 'GV1': [0, 56, int], 'GV2': [0, 56, int], 'GV3': [0, 56, int]
                 }
 
     _commands = {'QUERY': query}
-                            
+
     node_def_id = 'pika'
 
-    
+
 class Inverter(Node):
     """
     Instantiate an inverter node.
-    
+
     :param parent: Parent node device (ElectrIQSystem)
     :param controller: Controller node device (ElectrIQNode)
     :param address: Address of the node for ISY
     :param device: The device value we discovered from the Pika
     :param manifest: Directory of config values
-    
+
     .. autoattribute:: _drivers
     .. autoattribute:: _commands
     .. autoattribute:: node_def_id
@@ -330,7 +330,7 @@ class Inverter(Node):
             try:
                 self.cumVArhPrevious = self.manifest['drivers']['RR']
             except KeyError:
-                pass                
+                pass
             self.VAr = self.VArPrevious
             if self.inv.common.Mn != None:
                 LOGGER.info(common(self.inv))
@@ -376,7 +376,7 @@ class Inverter(Node):
                 time.sleep(1)
                 self.update_info()
         return
-        
+
     def update_drivers(self):
         self.set_driver('GV1', self.St)
         self.set_driver('GV2', self.Ena)
@@ -395,7 +395,7 @@ class Inverter(Node):
         self.set_driver('GV15', self.QMaxLimPct)
         self.set_driver('ST', self.cumVArh)
         self.set_driver('RR', self.cumkVArh)
-        
+
 
     def query(self, **kwargs):
         """
@@ -404,7 +404,7 @@ class Inverter(Node):
         self.update_info()
         self.report_driver()
         return True
-        
+
     _drivers = {
                 'GV1': [0, 56, int], 'GV2': [0, 2, myfloat], 'GV3': [0, 73, myfloat],
                 'GV4': [0, 73, myfloat], 'GV5': [0, 1, myfloat], 'GV6': [0, 72, myfloat],
@@ -416,19 +416,19 @@ class Inverter(Node):
 
     _commands = {'QUERY': query}
 
-    node_def_id = 'inverter'    
+    node_def_id = 'inverter'
 
-    
+
 class Battery(Node):
     """
     Instantiate a Battery node.
-    
+
     :param parent: Parent node device (ElectrIQSystem)
     :param controller: Controller node device (ElectrIQNode)
     :param address: Address of the node for ISY
     :param device: The device value we discovered from the Pika
     :param manifest: Directory of config values
-    
+
     .. autoattribute:: _drivers
     .. autoattribute:: _commands
     .. autoattribute:: node_def_id
@@ -447,7 +447,7 @@ class Battery(Node):
             readPoints(self.bat)
             super(Battery, self).__init__(parent, self.address, self.name, self.controller, None)
             if self.bat.common.Mn != None:
-                LOGGER.info(common(self.bat))        
+                LOGGER.info(common(self.bat))
 
     def update_info(self):
         if readPoints(self.controller.pika) and readPoints(self.bat):
@@ -483,9 +483,9 @@ class Battery(Node):
             self.bat = openConnection(self.bat, self.slaveId)
             if self.bat:
                 time.sleep(1)
-                self.update_info()        
+                self.update_info()
         return
-        
+
     def update_drivers(self):
         self.set_driver('GV1', self.St)
         self.set_driver('GV2', self.Ena)
@@ -510,7 +510,7 @@ class Battery(Node):
         self.update_info()
         self.report_driver()
         return True
-        
+
     _drivers = {
                 'GV1': [0, 56, myfloat], 'GV2': [0, 2, int], 'GV3': [0, 73, myfloat],
                 'GV4': [0, 4, myfloat], 'GV5': [0, 51, myfloat], 'GV6': [0, 51, myfloat],
@@ -521,9 +521,9 @@ class Battery(Node):
 
     _commands = {'QUERY': query}
 
-    node_def_id = 'battery'    
-    
-    
+    node_def_id = 'battery'
+
+
 def convertCT(o2):
     if o2 > 30000:
         ct_power = -(2**16 - o2)
@@ -535,7 +535,7 @@ def common(model):
     if model:
         c = model.common
         return 'Found device: Mn: {} Md: {} Vr: {} SN: {}'.format(c.Mn, c.Md, c.Vr, c.SN)
-    
+
 def readPoints(model):
     if not model: return False
     try:
@@ -544,7 +544,7 @@ def readPoints(model):
     except (Exception) as ex:
         LOGGER.error('readPoints Exception: {}'.format(ex))
         return False
-    
+
 def openConnection(device, slaveId):
     """
     The openConnection method to open/re-open connection to the Pika
@@ -556,13 +556,13 @@ def openConnection(device, slaveId):
         return d
     except (Exception) as ex:
         LOGGER.error('connection error {}'.format(ex))
-        return None        
+        return None
 
 def fixsign (uint) :
     # a 16 bit unsigned int is recast to be signed
     # fix the pika O2 register value is signed
-    return uint if uint < 32768 else uint - 65536        
-        
+    return uint if uint < 32768 else uint - 65536
+
 def hexstatus(d) :
     st = d if isinstance(d, int) else \
          d.St
@@ -577,14 +577,14 @@ def hexstatus(d) :
 def main():
     """Setup connection, node server, and nodes"""
     poly = PolyglotConnector()
-    # Override shortpoll and longpoll timers to 5/30, once per second is excessive in this nodeserver 
-    nserver = ElectrIQSystem(poly, 5, 30)
+    # Override shortpoll and longpoll timers to 5/30, once per second is excessive in this nodeserver
+    nserver = ElectrIQSystem(poly, 30, 60)
     poly.connect()
     poly.wait_for_config()
     poly.logger.info("ElectrIQ Interface version " + VERSION + " created. Initiating setup.")
     nserver.setup()
     poly.logger.info("Setup completed. Running Server.")
     nserver.run()
-    
+
 if __name__ == "__main__":
     main()
