@@ -9,8 +9,8 @@ from polyglot.nodeserver_api import SimpleNodeServer, PolyglotConnector, Node
 import sunspec.core.client as Sunspec
 import time
 
-PIKA_IP = '127.0.0.1'
-PIKA_PORT = '19998'
+PIKA_IP = '192.168.1.221'
+PIKA_PORT = '502'
 
 VERSION = "1.0"
 LOGGER = None
@@ -311,7 +311,7 @@ class Inverter(Node):
         self.device = device
         self.slaveId = self.device.UnitID
         self.inv = None
-        self.readInterval = 5
+        self.readInterval = 30
         self.VArPrevious = 0
         self.cumVArhPrevious = 0
         self.cumVArh = 0
@@ -346,7 +346,7 @@ class Inverter(Node):
                 self.Ena = self.device.Ena
                 self.P = self.device.P # Watts
                 self.O2 = fixsign(self.device.O2)
-            if self.inv:
+            if self.inv and hasattr(self.inv, 'inverter'):
                 self.A = self.inv.inverter.A
                 self.V = self.inv.inverter.PhVphA
                 self.W = self.inv.inverter.W
@@ -439,6 +439,7 @@ class Battery(Node):
         self.device = device
         self.slaveId = self.device.UnitID
         self.bat = None
+	self.enabled = False
         LOGGER.info('Created Battery Controller, attempting connction to controller at unit id: {}'.format(self.slaveId))
         self.bat = openConnection(self.bat, self.slaveId)
         self.address = 'eq_bat_' + str(self.slaveId)
