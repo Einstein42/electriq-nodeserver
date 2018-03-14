@@ -1,5 +1,5 @@
 {
-    "name": "ElectrIQ NodeServer",
+    "name": "ElectrIQ",
     "docs": "",
     "type": "python",
     "executable": "electriq.py",
