@@ -9,7 +9,7 @@
         {
             "title": "ElectrIQ NodeServer",
             "author": "James Milne (Einstein.42)",
-            "version": "0.1",
+            "version": "2.0.1",
             "date": "July 2nd, 2017",
             "source": "https://github.com/Einstein42/electriq-nodeserver",
             "license": "MIT"
